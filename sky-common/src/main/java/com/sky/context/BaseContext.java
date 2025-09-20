@@ -1,5 +1,6 @@
 package com.sky.context;
 
+// 基于ThreadLocal封装的线程变量
 public class BaseContext {
 
     public static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
