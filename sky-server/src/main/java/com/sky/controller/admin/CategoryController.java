@@ -45,4 +45,17 @@ public class CategoryController {
         categoryService.save(categoryDTO);
         return Result.success();
     }
+
+    /**
+     * 启用、禁用分类
+     * @return
+     */
+    @ApiOperation("启用、禁用分类")
+    @PostMapping("/status/{status}")
+    public Result startOrStop(@PathVariable Integer status, Long id){
+        log.info("启用、禁用分类：{},{}",status, id);
+        categoryService.startOrStop(status, id);
+        return Result.success();
+    }
+
 }
