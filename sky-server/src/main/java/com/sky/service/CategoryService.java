@@ -25,4 +25,10 @@ public interface CategoryService {
      * @param id
      */
     void startOrStop(Integer status, Long id);
+
+    /**
+     * 修改分类
+     * @param categoryDTO
+     */
+    void update(CategoryDTO categoryDTO);
 }
