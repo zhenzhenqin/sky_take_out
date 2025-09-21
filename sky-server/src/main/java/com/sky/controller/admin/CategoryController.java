@@ -70,4 +70,16 @@ public class CategoryController {
         return Result.success();
     }
 
+    /**
+     * 删除分类
+     * @return
+     */
+    @DeleteMapping
+    @ApiOperation("删除分类")
+    public Result delete(Long id){
+        log.info("删除分类:{}", id);
+        categoryService.delete(id);
+        return Result.success();
+    }
+
 }

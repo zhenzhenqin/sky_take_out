@@ -7,7 +7,6 @@ import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.mapper.CategoryMapper;
 import com.sky.result.PageResult;
-import com.sky.result.Result;
 import com.sky.service.CategoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +71,15 @@ public class CategoryServiceImpl implements CategoryService {
                 .sort(categoryDTO.getSort())
                 .build();
         categoryMapper.update(category);
+    }
+
+    /**
+     * 删除分类
+     * @param id
+     */
+    @Override
+    public void delete(Long id) {
+        categoryMapper.delete(id);
     }
 
 }
