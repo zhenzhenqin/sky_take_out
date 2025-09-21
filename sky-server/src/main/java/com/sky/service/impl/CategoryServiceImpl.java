@@ -12,6 +12,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -80,6 +81,17 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void delete(Long id) {
         categoryMapper.delete(id);
+    }
+
+    /**
+     * 根据类型查询分类
+     * @param type
+     * @return
+     */
+    @Override
+    public List<Category> getByType(Integer type) {
+        List<Category> category = categoryMapper.getByType(type);
+        return category;
     }
 
 }
