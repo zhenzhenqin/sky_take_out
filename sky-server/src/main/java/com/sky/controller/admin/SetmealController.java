@@ -73,4 +73,16 @@ public class SetmealController {
         return Result.success();
     }
 
+    /**
+     * 根据id批量删除套餐
+     * @return
+     */
+    @ApiOperation("根据id删除套餐")
+    @DeleteMapping
+    public Result deleteByIds(@RequestParam List<Long> ids){
+        log.info("根据id删除套餐:{}", ids);
+        setmealService.deleteByIds(ids);
+        return Result.success();
+    }
+
 }

@@ -5,6 +5,7 @@ import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -49,5 +50,9 @@ public interface SetmealMapper {
     @AutoFill(value = OperationType.UPDATE)
     void updateSetmeal(Setmeal setmeal);
 
-
+    /**
+     * 根据id批量删除套餐
+     * @param ids
+     */
+    void deleteByIds(List<Long> ids);
 }

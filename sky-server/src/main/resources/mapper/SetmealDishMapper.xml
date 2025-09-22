@@ -13,7 +13,7 @@
     </insert>
 
     <!--根据id删除套餐下的菜品-->
-    <delete id="deleteBySetmealIds">
+    <delete id="deleteSetmealDishIds">
         delete from setmeal_dish where setmeal_id in
         <foreach collection="ids" item="id" open="(" close=")" separator=",">
             #{id}

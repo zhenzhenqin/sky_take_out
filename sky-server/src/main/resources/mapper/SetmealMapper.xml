@@ -24,6 +24,14 @@
         where id = #{id}
     </update>
 
+    <!--根据id批量删除-->
+    <delete id="deleteByIds">
+        delete from setmeal where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
 
     <!--套餐条件分页查询-->
     <select id="pageQuery" resultType="com.sky.entity.Setmeal">
