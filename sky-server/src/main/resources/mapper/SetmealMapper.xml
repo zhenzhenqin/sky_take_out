@@ -8,7 +8,22 @@
         values (#{name}, #{categoryId}, #{image}, #{price}, #{status}, #{description}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
     </insert>
 
-    <insert id="insertBatch"></insert>
+    <!--修改套餐-->
+    <update id="updateSetmeal">
+        update setmeal
+        <set>
+            <if test="name != null and name != '' ">name = #{name},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="image != null and image != '' ">image = #{image},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="description != null and description != '' ">description = #{description},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="updateUser != null">update_user = #{updateUser},</if>
+        </set>
+        where id = #{id}
+    </update>
+
 
     <!--套餐条件分页查询-->
     <select id="pageQuery" resultType="com.sky.entity.Setmeal">

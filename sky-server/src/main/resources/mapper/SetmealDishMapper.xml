@@ -7,9 +7,18 @@
         insert into setmeal_dish (setmeal_id, dish_id, copies, price, name)
         values
         <foreach collection="setmealDishes" item="setmealDish" separator=",">
-            (#{setmealDish.setmealId}, #{setmealDish.dishId}, #{setmealDish.copies}, #{setmealDish.price}, #{setmealDish.name})
+            (#{setmealDish.setmealId}, #{setmealDish.dishId}, #{setmealDish.copies}, #{setmealDish.price},
+            #{setmealDish.name})
         </foreach>
     </insert>
+
+    <!--根据id删除套餐下的菜品-->
+    <delete id="deleteBySetmealIds">
+        delete from setmeal_dish where setmeal_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 
     <!--根据菜品id查询套餐id-->
     <select id="getSetmealIdsByDishIds" resultType="java.lang.Long">
