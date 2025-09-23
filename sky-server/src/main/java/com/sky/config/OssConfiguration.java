@@ -15,7 +15,7 @@ public class OssConfiguration {
      * 创建阿里云文件上传客户端
      * @return
      */
-    @Bean
+    @Bean //将AliOssUtil对象加入到IOC容器中进行管理
     @ConditionalOnMissingBean // 如果容器中不存在这个bean，则创建这个bean
     public AliOssUtil aliOssUtil(AliOssProperties aliOssProperties) {
         log.info("开始创建阿里云文件上传客户端:{}", aliOssProperties);

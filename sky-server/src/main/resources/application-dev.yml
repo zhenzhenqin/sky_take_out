@@ -18,3 +18,7 @@ sky:
     endpoint: oss-cn-hangzhou.aliyuncs.com
     access-key-id: java-management-016
     access-key-secret: QjqIA4MRVplurQzEHrSx9jHFMbF3dJ
+
+  wechat:
+    appid: wx4cdddbcd89c97cd0
+    secret: f98f650e1a47cc5d755c0a8e9c887cf6
