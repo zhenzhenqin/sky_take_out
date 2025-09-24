@@ -4,7 +4,7 @@
 <mapper namespace="com.sky.mapper.UserMapper">
     <!--插入用户-->
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
-        insert into user (openid, name, phone, sex, id_number, avatar, create_time, update_time, create_user, update_user)
-        values (#{openid}, #{name}, #{phone}, #{sex}, #{idNumber}, #{avatar}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})
+        insert into user (openid, name, phone, sex, id_number, avatar, create_time)
+        values (#{openid}, #{name}, #{phone}, #{sex}, #{idNumber}, #{avatar}, #{createTime})
     </insert>
 </mapper>
