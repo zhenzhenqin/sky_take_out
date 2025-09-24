@@ -30,7 +30,7 @@ public interface SetmealDishMapper {
     void deleteSetmealDishIds(List<Long> ids);
     
     /**
-     * 根据套餐id查询套餐和菜品的关联关系
+     * 根据套餐id查询套餐和菜品的关联关系 不需要图片
      * @param setmealId
      * @return
      */
