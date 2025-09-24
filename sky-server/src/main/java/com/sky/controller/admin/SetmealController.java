@@ -16,7 +16,7 @@ import java.util.List;
 
 @Slf4j
 @Api(tags = "套餐相关接口")
-@RestController
+@RestController("adminSetmealController")
 @RequestMapping("/admin/setmeal")
 public class SetmealController {
 
@@ -56,7 +56,7 @@ public class SetmealController {
     @GetMapping("/{id}")
     public Result<SetmealVO> getById(@PathVariable Long id){
         log.info("根据id查询套餐:{}", id);
-        SetmealVO setmealVO = setmealService.getById(id);
+        SetmealVO setmealVO = setmealService.getByIdWithDish(id);
         return Result.success(setmealVO);
     }
 

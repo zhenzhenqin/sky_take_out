@@ -3,7 +3,6 @@ package com.sky.mapper;
 import com.sky.annotation.AutoFill;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
-import com.sky.entity.SetmealDish;
 import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
@@ -38,12 +37,6 @@ public interface SetmealMapper {
     Setmeal getSetmealById(Long id);
 
     /**
-     * 获取套餐的菜品数据
-     */
-    @Select("select * from setmeal_dish where setmeal_id = #{setmealId}")
-    List<SetmealDish> getDishMapper(Long setmealId);
-
-    /**
      * 修改套餐信息
      * @param setmeal
      */
@@ -56,4 +49,10 @@ public interface SetmealMapper {
      */
     void deleteByIds(List<Long> ids);
 
+    /**
+     * 根据条件查询套餐数据
+     * @param setmeal
+     * @return
+     */
+    List<Setmeal> list(Setmeal setmeal);
 }

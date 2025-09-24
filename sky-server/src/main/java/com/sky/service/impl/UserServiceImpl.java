@@ -29,17 +29,18 @@ public class UserServiceImpl implements UserService {
 
     /**
      * 微信登录
+     *
      * @param userLoginDTO
      * @return
      */
     @Override
     public User wxLogin(UserLoginDTO userLoginDTO) {
         //调用微信接口服务获取openid
-        //自己翻微信开发文档https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html
+        //自己翻微信开发文档 https://developers.weixin.qq.com/miniprogram/dev/OpenApiDoc/user-login/code2Session.html
 
         //根据开发文档 前端调用wx.login()获取登录凭证code，传回服务器后端
         //后端调用相应接口，换取用户唯一表示openid.........
-        Map<String,String> map = new HashMap<>();
+        Map<String, String> map = new HashMap<>();
         map.put("appid", weChatProperties.getAppid());
         map.put("secret", weChatProperties.getSecret());
         map.put("js_code", userLoginDTO.getCode());
@@ -56,13 +57,13 @@ public class UserServiceImpl implements UserService {
         String openid = jsonObject.getString("openid"); //获取到返回的openid
 
         //判断openid是否为空 抛出异常
-        if(openid == null){
+        if (openid == null) {
             throw new LoginFailedException(MessageConstant.LOGIN_FAILED);
         }
 
         //判断是否为新用户
         User user = userMapper.getByOpenid(openid);
-        if(user == null){
+        if (user == null) {
 
             //是新用户 就插入数据库
             user = User.builder()

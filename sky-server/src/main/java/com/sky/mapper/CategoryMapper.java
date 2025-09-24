@@ -47,6 +47,5 @@ public interface CategoryMapper {
      * @param type 1 菜品分类 2 套餐分类
      * @return
      */
-    @Select("select * from category where type = #{type}")
     List<Category> getByType(Integer type);
 }

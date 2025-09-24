@@ -24,7 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/user/user")
 @Slf4j
-@Api(tags = "用户登录接口")
+@Api(tags = "C端-用户登录接口")
 public class UserController {
 
     @Autowired
@@ -34,13 +34,14 @@ public class UserController {
 
     /**
      * 微信登录
+     *
      * @param userLoginDTO
      * @return
      */
     @PostMapping("/login")
     @ApiOperation("微信登录")
-    public Result<UserLoginVO> wxLogin(@RequestBody UserLoginDTO userLoginDTO){
-        log.info("微信登录用户参数:{}",userLoginDTO);
+    public Result<UserLoginVO> wxLogin(@RequestBody UserLoginDTO userLoginDTO) {
+        log.info("微信登录用户参数:{}", userLoginDTO);
 
         //微信登录
         User user = userService.wxLogin(userLoginDTO);

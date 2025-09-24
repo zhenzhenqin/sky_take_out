@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@RestController
+@RestController("adminCategoryController")
 @RequestMapping("/admin/category")
 @Api(tags = "分类相关接口")
 public class CategoryController {
@@ -25,14 +25,14 @@ public class CategoryController {
 
     /**
      * 分类分页查询
-     * @param CategoryPageQueryDTO
+     * @param categoryPageQueryDTO
      * @return
      */
     @GetMapping("/page")
     @ApiOperation("分类分页查询")
-    public Result<PageResult> page(CategoryPageQueryDTO CategoryPageQueryDTO){
-        log.info("分页查询:{}", CategoryPageQueryDTO);
-        PageResult page = categoryService.page(CategoryPageQueryDTO);
+    public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO){
+        log.info("分页查询:{}", categoryPageQueryDTO);
+        PageResult page = categoryService.page(categoryPageQueryDTO);
         return Result.success(page);
     }
 

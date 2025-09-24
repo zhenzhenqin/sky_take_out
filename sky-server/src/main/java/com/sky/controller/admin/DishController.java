@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Slf4j
-@RestController
+@RestController("adminDishController")
 @RequestMapping("/admin/dish")
 @Api(tags = "菜品相关接口")
 public class DishController {
@@ -112,7 +112,7 @@ public class DishController {
     @ApiOperation("根据分类id查询菜品")
     public Result getByCategoryId(Long categoryId){
         log.info("根据分类id查询菜品:{}", categoryId);
-        List<Dish> dishList = dishService.getByCategoryId(categoryId);
-        return Result.success(dishList);
+        List<Dish> list = dishService.list(categoryId);
+        return Result.success(list);
     }
 }
