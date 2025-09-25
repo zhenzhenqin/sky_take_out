@@ -49,10 +49,10 @@ public class UserServiceImpl implements UserService {
         JSONObject jsonObject = JSON.parseObject(result); //将json格式数据转化为内置对象
 
         // 检查微信是否返回了错误码
-        if (jsonObject.containsKey("errcode") && jsonObject.getInteger("errcode") != 0) {
+        /*if (jsonObject.containsKey("errcode") && jsonObject.getInteger("errcode") != 0) {
             String errmsg = jsonObject.getString("errmsg");
             throw new LoginFailedException("微信登录失败，错误码：" + jsonObject.getInteger("errcode") + "，错误信息：" + errmsg);
-        }
+        }*/
 
         String openid = jsonObject.getString("openid"); //获取到返回的openid
 

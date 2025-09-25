@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -36,7 +35,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void add(ShoppingCartDTO shoppingCartDTO) {
         ShoppingCart shoppingCart = new ShoppingCart();
         BeanUtils.copyProperties(shoppingCartDTO, shoppingCart);
-        shoppingCart.setUserId(BaseContext.getCurrentId()); //设置用户id
+        shoppingCart.setUserId(BaseContext.getCurrentId());   //设置用户id
 
         //从数据库表中查询是否存在该商品
         ShoppingCart cart = shoppingCartMapper.getByUserIdAndDishId(shoppingCart);
