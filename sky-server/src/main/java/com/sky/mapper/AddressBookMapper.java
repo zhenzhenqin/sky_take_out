@@ -33,4 +33,10 @@ public interface AddressBookMapper {
      */
     @Select("select * from address_book where id = #{id}")
     AddressBook getAddressById(Long id);
+
+    /**
+     * 修改地址
+     * @param addressBook
+     */
+    void update(AddressBook addressBook);
 }

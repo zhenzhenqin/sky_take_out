@@ -25,4 +25,10 @@ public interface AddressBookService {
      * @return
      */
     AddressBook getAddressById(Long id);
+
+    /**
+     * 更新地址
+     * @param addressBook
+     */
+    void update(AddressBook addressBook);
 }

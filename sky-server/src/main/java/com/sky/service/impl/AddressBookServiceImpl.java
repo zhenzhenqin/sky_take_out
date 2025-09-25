@@ -47,4 +47,13 @@ public class AddressBookServiceImpl implements AddressBookService {
         AddressBook addressBook = addressBookMapper.getAddressById(id);
         return addressBook;
     }
+
+    /**
+     * 修改地址
+     * @param addressBook
+     */
+    @Override
+    public void update(AddressBook addressBook) {
+        addressBookMapper.update(addressBook);
+    }
 }
