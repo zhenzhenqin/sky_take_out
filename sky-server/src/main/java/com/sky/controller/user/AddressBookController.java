@@ -78,5 +78,43 @@ public class AddressBookController {
         return Result.success();
     }
 
+    /**
+     * 设置默认地址
+     * @param addressBook
+     * @return
+     */
+    @ApiOperation("设置默认地址")
+    @PutMapping("/default")
+    public Result setDefault(@RequestBody AddressBook addressBook){
+        log.info("设置默认地址:{}", addressBook);
+        addressBookService.setDefault(addressBook);
+        return Result.success();
+    }
+
+    /**
+     *  查询默认地址
+     * @return
+     */
+    @ApiOperation("查询默认地址")
+    @GetMapping("/default")
+    public Result getDefault(){
+        log.info("查询到的默认地址的用户id:{}", BaseContext.getCurrentId());
+        AddressBook addressBook = addressBookService.getDefault(BaseContext.getCurrentId());
+        return Result.success(addressBook);
+    }
+
+    /**
+     * 根据id删除地址簿
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据id删除地址簿")
+    @DeleteMapping
+    public Result deleteById(Long id){
+        log.info("根据id删除地址簿:{}", id);
+        addressBookService.deleteById(id);
+        return Result.success();
+    }
+
 
 }
