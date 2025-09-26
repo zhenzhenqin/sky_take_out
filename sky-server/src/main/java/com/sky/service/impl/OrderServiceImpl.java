@@ -393,6 +393,30 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    /**
+     * 管理端取消订单
+     * @param ordersCancelDTO
+     */
+    @Override
+    public void adminCancel(OrdersCancelDTO ordersCancelDTO) {
+        Orders order = orderMapper.getById(ordersCancelDTO.getId()); //根据id查询到订单
+
+        //判断是否已经支付 已经支付退款
+        if(order.getPayStatus() == Orders.PAID){
+            //weChatPayUtil.refund(order.getNumber(), order.getNumber(), new BigDecimal(0.01), new BigDecimal(0.01));
+            order.setPayStatus(Orders.REFUND); //修改订单支付状态为已退款
+        }
+
+        //修改订单状态为已取消
+        order.setId(ordersCancelDTO.getId());
+        order.setStatus(Orders.CANCELLED);
+        order.setCancelReason(ordersCancelDTO.getCancelReason());
+        order.setCancelTime(LocalDateTime.now());
+
+        orderMapper.update(order);
+    }
+
+
     //下面是封装方法
 
     //获取订单中菜品
