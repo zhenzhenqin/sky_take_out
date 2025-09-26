@@ -5,9 +5,7 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.context.BaseContext;
-import com.sky.dto.OrdersPageQueryDTO;
-import com.sky.dto.OrdersPaymentDTO;
-import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.*;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
@@ -26,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
@@ -352,9 +351,46 @@ public class OrderServiceImpl implements OrderService {
         return orderStatisticsVO;
     }
 
+    /**
+     * 确认接单
+     * @param ordersConfirmDTO
+     */
+    @Override
+    public void confirm(OrdersConfirmDTO ordersConfirmDTO) {
+        Orders order = orders.builder()
+                .id(ordersConfirmDTO.getId())
+                .status(Orders.CONFIRMED)
+                .build();
+        orderMapper.update(order);
+    }
 
+    /**
+     * 拒单
+     * @param ordersRejectionDTO
+     */
+    @Override
+    public void rejection(OrdersRejectionDTO ordersRejectionDTO) throws Exception {
+        //要先判断是否处于待接单状态 否则不能拒单
+        Long id = ordersRejectionDTO.getId();
+        Orders order = orderMapper.getById(id); //根据id查询到订单
+        Integer status = order.getStatus(); //获取订单状态
 
+        if(status != Orders.TO_BE_CONFIRMED){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
 
+        //先判断支付状态 再退款
+        /*if(order.getPayStatus() == Orders.PAID){
+            weChatPayUtil.refund(order.getNumber(), order.getNumber(), new BigDecimal(0.01), new BigDecimal(0.01));
+        }*/
+
+        //修改订单状态 以及拒单原因 拒单时间
+        order.setStatus(Orders.CANCELLED);
+        order.setCancelReason(ordersRejectionDTO.getRejectionReason());
+
+        orderMapper.update(order);
+
+    }
 
 
     //下面是封装方法
