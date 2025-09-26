@@ -8,6 +8,7 @@ import com.sky.context.BaseContext;
 import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
+import com.sky.dto.ShoppingCartDTO;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
 import com.sky.exception.OrderBusinessException;
@@ -28,6 +29,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -267,8 +269,8 @@ public class OrderServiceImpl implements OrderService {
 
         //如果是待接单状态，则退款
         if(order.getStatus().equals(Orders.TO_BE_CONFIRMED)){
-            /*//调用微信支付退款接口
-            weChatPayUtil.refund(
+            //调用微信支付退款接口
+            /*weChatPayUtil.refund(
                     order.getNumber(), //商户订单号
                     order.getNumber(), //商户退款单号
                     new BigDecimal(0.01),//退款金额，单位 元
@@ -283,5 +285,32 @@ public class OrderServiceImpl implements OrderService {
         orders.setCancelReason("用户取消");
         orders.setCancelTime(LocalDateTime.now());
         orderMapper.update(orders);
+    }
+
+    /**
+     * 再来一单
+     * @param id
+     */
+    @Override
+    public void repetition(Long id) {
+        //根据订单id查询到订单详情
+        List<OrderDetail> orderDetails = orderDetailMapper.getByOrderId(id);
+
+        //将订单对象转化为购物车对象
+        //购物车一条商品占据一行
+        List<ShoppingCart> carts = orderDetails.stream().map(orderDetail -> {
+            ShoppingCart cart = new ShoppingCart();
+
+            //将订单详情拷贝到购物车中
+            BeanUtils.copyProperties(orderDetail, cart);
+            //设置用户id
+            cart.setUserId(BaseContext.getCurrentId());
+            cart.setCreateTime(LocalDateTime.now());
+
+            return cart;
+        }).collect(Collectors.toList());
+
+        //将购物车数据批量插入到数据库
+        shoppingCartMapper.insertBatch(carts);
     }
 }
