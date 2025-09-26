@@ -417,6 +417,44 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
+    /**
+     * 派送订单
+     * @param id
+     */
+    @Override
+    public void delivery(Long id) {
+
+        //判断订单是否处于已接单状态
+        Orders order = orderMapper.getById(id);
+        if(order.getStatus() != Orders.CONFIRMED){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        //修改订单状态为派送中
+        order.setStatus(Orders.DELIVERY_IN_PROGRESS);
+        orderMapper.update(order);
+    }
+
+
+    /**
+     * 完成订单
+     * @param id
+     */
+    @Override
+    public void complete(Long id) {
+        //判断订单是否处于派送中状态
+        Orders order = orderMapper.getById(id);
+        if(order.getStatus() != Orders.DELIVERY_IN_PROGRESS){
+            throw new OrderBusinessException(MessageConstant.ORDER_STATUS_ERROR);
+        }
+
+        //修改订单状态为已完成
+        order.setStatus(Orders.COMPLETED);
+        order.setDeliveryTime(LocalDateTime.now());
+        orderMapper.update(order);
+    }
+
+
     //下面是封装方法
 
     //获取订单中菜品

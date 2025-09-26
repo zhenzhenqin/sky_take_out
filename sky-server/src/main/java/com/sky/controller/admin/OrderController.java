@@ -101,4 +101,28 @@ public class OrderController {
         return Result.success();
     }
 
+    /**
+     * 派送订单
+     * @return
+     */
+    @ApiOperation("派送订单")
+    @PutMapping("/delivery/{id}")
+    public Result delivery(@PathVariable Long id){
+        log.info("派送订单参数:{}", id);
+        orderService.delivery(id);
+        return Result.success();
+    }
+
+    /**
+     * 完成订单
+     * @param id
+     * @return
+     */
+    @PutMapping("/complete/{id}")
+    public Result complete(@PathVariable Long id){
+        log.info("完成订单参数:{}", id);
+        orderService.complete(id);
+        return Result.success();
+    }
+
 }
