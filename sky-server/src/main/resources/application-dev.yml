@@ -29,3 +29,9 @@ sky:
     #weChatPayCertFilePath: classpath:cert/wechatpay_cert.pem
     notifyUrl: http://737f4b1f.r9.cpolar.cn/wechatpay/notify
     refundNotifyUrl: http://737f4b1f.r9.cpolar.cn/wechatpay/refundNotify
+
+  shop:
+    address: 杭州市钱塘区学源街168号
+
+  baidu:
+    ak: r9L6wrzjH2NWhRj77CT5OZb6xTK17CdD
