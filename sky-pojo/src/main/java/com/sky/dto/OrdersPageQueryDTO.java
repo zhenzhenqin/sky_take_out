@@ -13,11 +13,11 @@ public class OrdersPageQueryDTO implements Serializable {
 
     private int pageSize;
 
-    private String number;
+    private String number; //订单号
 
-    private  String phone;
+    private  String phone; //手机号
 
-    private Integer status;
+    private Integer status; //订单状态
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime beginTime;
@@ -25,6 +25,6 @@ public class OrdersPageQueryDTO implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime endTime;
 
-    private Long userId;
+    private Long userId; //用户id
 
 }
