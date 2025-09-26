@@ -5,7 +5,41 @@
 
     <!--插入订单-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into orders (number, order_time, pay_status, status, phone, consignee,amount, address, user_id, address_book_id)
-        values (#{number}, #{orderTime}, #{payStatus}, #{status}, #{phone}, #{consignee},#{amount}, #{address}, #{userId}, #{addressBookId})
+        insert into orders (number, order_time, pay_status, status, phone, consignee, amount, address, user_id,
+                            address_book_id)
+        values (#{number}, #{orderTime}, #{payStatus}, #{status}, #{phone}, #{consignee}, #{amount}, #{address},
+                #{userId}, #{addressBookId})
     </insert>
+
+    <!--修改订单-->
+    <update id="update" parameterType="com.sky.entity.Orders">
+        update orders
+        <set>
+            <if test="cancelReason != null and cancelReason!='' ">
+                cancel_reason=#{cancelReason},
+            </if>
+            <if test="rejectionReason != null and rejectionReason!='' ">
+                rejection_reason=#{rejectionReason},
+            </if>
+            <if test="cancelTime != null">
+                cancel_time=#{cancelTime},
+            </if>
+            <if test="payStatus != null">
+                pay_status=#{payStatus},
+            </if>
+            <if test="payMethod != null">
+                pay_method=#{payMethod},
+            </if>
+            <if test="checkoutTime != null">
+                checkout_time=#{checkoutTime},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="deliveryTime != null">
+                delivery_time = #{deliveryTime}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 </mapper>
