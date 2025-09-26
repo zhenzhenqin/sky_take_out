@@ -1,5 +1,6 @@
 package com.sky.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.sky.entity.OrderDetail;
 import lombok.Data;
 import java.io.Serializable;
@@ -25,9 +26,11 @@ public class OrdersDTO implements Serializable {
     private Long addressBookId;
 
     //下单时间
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderTime;
 
     //结账时间
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime checkoutTime;
 
     //支付方式 1微信，2支付宝

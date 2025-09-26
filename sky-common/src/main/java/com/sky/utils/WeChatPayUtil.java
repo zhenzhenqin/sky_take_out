@@ -133,8 +133,8 @@ public class WeChatPayUtil {
      */
     private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("appid", weChatProperties.getAppid());
-        jsonObject.put("mchid", weChatProperties.getMchid());
+        jsonObject.put("appid", weChatProperties.getAppid()); //公众号的appid
+        jsonObject.put("mchid", weChatProperties.getMchid()); //商户号
         jsonObject.put("description", description);
         jsonObject.put("out_trade_no", orderNum);
         jsonObject.put("notify_url", weChatProperties.getNotifyUrl());
