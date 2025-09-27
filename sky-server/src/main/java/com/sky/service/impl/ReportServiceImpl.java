@@ -4,8 +4,10 @@ package com.sky.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
+import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
 import com.sky.vo.TurnoverReportVO;
+import com.sky.vo.UserReportVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,8 @@ public class ReportServiceImpl implements ReportService {
 
     @Autowired
     private OrderMapper orderMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * 营业额统计
@@ -78,6 +82,65 @@ public class ReportServiceImpl implements ReportService {
         return TurnoverReportVO.builder()
                 .dateList(dateListStr)
                 .turnoverList(turnoverListStr)
+                .build();
+    }
+
+    /**
+     * 用户统计
+     * @param begin
+     * @param end
+     * @return
+     */
+    @Override
+    public UserReportVO userStatistics(LocalDate begin, LocalDate end) {
+        //处理时间
+        List<LocalDate> dataList = new ArrayList<>();
+        dataList.add(begin);
+        while (!begin.equals(end)){
+            begin = begin.plusDays(1);
+            dataList.add(begin);
+        }
+
+        //将时间列表转化为逗号分隔的字符串
+        String dateListStr = StringUtils.join(dataList, ',');
+
+        //处理用户总量
+        List<Integer> totalUserList = new ArrayList<>();
+        List<Integer> newUserList = new ArrayList<>();
+        for (LocalDate date : dataList){
+            //根据时间查询用户数量
+            LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
+            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
+
+            Map map1 = new HashMap<>();
+
+            Map map = new HashMap<>();
+            map.put("beginTime", beginTime);
+            map.put("endTime", endTime);
+
+            //获取总用户数
+            Integer totalUser = userMapper.getUserByDateAndStatus(map1);
+            if (totalUser == null){
+                totalUser = 0;
+            }
+            totalUserList.add(totalUser);
+
+            //获取当日新增用户数
+            Integer newUser = userMapper.getUserByDateAndStatus(map);
+            if (newUser == null){
+                newUser = 0;
+            }
+            newUserList.add(newUser);
+        }
+
+        String totalUserListStr = StringUtils.join(totalUserList, ',');
+        String newUserListStr = StringUtils.join(newUserList, ',');
+
+
+        return UserReportVO.builder()
+                .dateList(dateListStr)
+                .totalUserList(totalUserListStr)
+                .newUserList(newUserListStr)
                 .build();
     }
 }
