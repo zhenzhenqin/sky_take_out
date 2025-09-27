@@ -50,8 +50,6 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private WeChatPayUtil weChatPayUtil;
 
-
-
     @Value("${sky.shop.address}")
     private String shopAddress;
 
@@ -547,7 +545,7 @@ public class OrderServiceImpl implements OrderService {
         map.put("destination",userLngLat);
         map.put("steps_info","0");
 
-        //路线规划
+        //路线规划  调用百度地图开放平台的路线规划相关接口
         String json = HttpClientUtil.doGet("https://api.map.baidu.com/directionlite/v1/driving", map);
 
         jsonObject = JSON.parseObject(json);
