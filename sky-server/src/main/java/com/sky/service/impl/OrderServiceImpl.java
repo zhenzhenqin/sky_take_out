@@ -165,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
         LocalDateTime check_out_time = LocalDateTime.now();//更新支付时间
         orderMapper.updateStatus(OrderStatus, OrderPaidStatus, check_out_time, this.orders.getId());
 
-        //webSocket向客户端发送订单消息 type, orderId, content
+        //webSocket向客户端发送实时订单消息 type, orderId, content
         Map map = new HashMap();
         map.put("type", 1);  //1表示来单提醒
         map.put("orderId", this.orders.getId());
@@ -476,6 +476,29 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(Orders.COMPLETED);
         order.setDeliveryTime(LocalDateTime.now());
         orderMapper.update(order);
+    }
+
+    /**
+     * 客户催单
+     * @param id
+     */
+    @Override
+    public void reminder(Long id) {
+
+        //查询有无订单
+        Orders order = orderMapper.getById(id);
+        if(order == null){
+            throw new OrderBusinessException(MessageConstant.ORDER_NOT_FOUND);
+        }
+
+        //给商户端推送消息
+        Map map = new HashMap();
+        map.put("type", 2); //2表示客户催单
+        map.put("orderId", id);
+        map.put("content", "订单号：" + order.getNumber());
+        String json = JSON.toJSONString(map);
+
+        webSocketServer.sendToAllClient(json);
     }
 
 
