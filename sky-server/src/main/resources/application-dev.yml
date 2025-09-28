@@ -27,8 +27,8 @@ sky:
     #privateKeyFilePath: classpath:cert/apiclient_key.pem
     apiV3Key: 32823456789012345678901234567890
     #weChatPayCertFilePath: classpath:cert/wechatpay_cert.pem
-    notifyUrl: https://7500af12.r22.cpolar.top /wechatpay/notify
-    refundNotifyUrl: https://7500af12.r22.cpolar.top/wechatpay/refundNotify
+    notifyUrl: https://71c37525.r22.cpolar.top/wechatpay/notify
+    refundNotifyUrl: https://71c37525.r22.cpolar.top/wechatpay/refundNotify
 
   shop:
     address: 杭州市钱塘区学源街168号

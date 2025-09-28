@@ -1,13 +1,12 @@
 package com.sky.service.impl;
 
+import com.sky.entity.OrderDetail;
 import com.sky.entity.Orders;
+import com.sky.mapper.OrderDetailMapper;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
-import com.sky.vo.OrderReportVO;
-import com.sky.vo.OrderVO;
-import com.sky.vo.TurnoverReportVO;
-import com.sky.vo.UserReportVO;
+import com.sky.vo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +27,8 @@ public class ReportServiceImpl implements ReportService {
     private OrderMapper orderMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private OrderDetailMapper orderDetailMapper;
 
     /**
      * 营业额统计
@@ -159,7 +160,6 @@ public class ReportServiceImpl implements ReportService {
         map1.put("beginTime",beginTime1);
         map1.put("endTime",endTime1);
 
-
         //转换时间
         List<LocalDate> dataList = new ArrayList<>();
         dataList.add(begin);
@@ -181,7 +181,6 @@ public class ReportServiceImpl implements ReportService {
             LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
             LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
 
-
             //获取当日订单数列表 根据时间去查询订单总数
             Map map = new HashMap<>();
             map.put("beginTime",beginTime);
@@ -193,7 +192,6 @@ public class ReportServiceImpl implements ReportService {
 
             allOrderCountList.add(orderCount);
 
-
             //获取当日有效订单列表  根据时间去查询有效订单数
             map.put("status",Orders.COMPLETED);
             Integer validOrderCount = orderMapper.getOrdersNumberByDateAndStatus(map);
@@ -202,8 +200,6 @@ public class ReportServiceImpl implements ReportService {
             }
             validOrderCountList.add(validOrderCount);
         }
-
-
 
         //获取时间区间内的订单总数
         Integer allOrdersNumber = orderMapper.getOrdersNumberByDateAndStatus(map1);
@@ -231,6 +227,41 @@ public class ReportServiceImpl implements ReportService {
                 .totalOrderCount(allOrdersNumber)
                 .validOrderCount(validOrdersNumber)
                 .validOrderCountList(validOrderCountListStr)
+                .build();
+    }
+
+    /**
+     * 销量排名Top10
+     * @param begin
+     * @param end
+     * @return
+     */
+    @Override
+    public SalesTop10ReportVO getSalesTop10(LocalDate begin, LocalDate end) {
+        //返回商品名称列表
+        LocalDateTime beginTime = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime = LocalDateTime.of(end, LocalTime.MAX);
+
+        //根据时间查询销量排名Top10
+        Map map = new HashMap<>();
+        map.put("beginTime",beginTime);
+        map.put("endTime",endTime);
+        List<OrderDetail> salesTop10OrderDetailList = orderDetailMapper.getSalesTop10(map);
+
+        List<String> numberList = new ArrayList<>();
+        List<String> nameList = new ArrayList<>();
+
+        for (OrderDetail orderDetail: salesTop10OrderDetailList){
+            numberList.add(String.valueOf(orderDetail.getNumber()));
+            nameList.add(orderDetail.getName());
+        }
+
+        String nameListStr = StringUtils.join(nameList, ',');
+        String numberListStr = StringUtils.join(numberList, ',');
+
+        return SalesTop10ReportVO.builder()
+                .nameList(nameListStr)
+                .numberList(numberListStr)
                 .build();
     }
 }

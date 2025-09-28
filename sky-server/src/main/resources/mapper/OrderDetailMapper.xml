@@ -12,4 +12,22 @@
             #{orderDetail.dishFlavor}, #{orderDetail.number}, #{orderDetail.amount}, #{orderDetail.image})
         </foreach>
     </insert>
+
+    <!--查询销量前10-->
+    <select id="getSalesTop10" resultType="com.sky.entity.OrderDetail">
+        select od.name as name, count(od.name) as number
+        from order_detail od, orders o
+        <where>
+            od.order_id = o.id
+            <if test="beginTime != null">
+                and o.order_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and o.order_time &lt;= #{endTime}
+            </if>
+        </where>
+        group by od.name
+        order by count(od.name) desc
+        limit 10
+    </select>
 </mapper>
