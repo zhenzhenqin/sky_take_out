@@ -79,6 +79,12 @@
             <if test="endTime != null">
                 and order_time &lt;= #{endTime}
             </if>
+            <if test="time != null">
+                and order_time = #{time}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
         </where>
     </select>
 
@@ -94,6 +100,9 @@
             </if>
             <if test="status != null">
                 and status = #{status}
+            </if>
+            <if test="time != null">
+                and order_time = #{time}
             </if>
         </where>
     </select>

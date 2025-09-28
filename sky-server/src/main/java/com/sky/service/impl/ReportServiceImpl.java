@@ -64,7 +64,7 @@ public class ReportServiceImpl implements ReportService {
             map.put("endTime", endTime);
             map.put("status", Orders.COMPLETED);
 
-            Double turnover = orderMapper.getByDateAndStatus(map);
+            Double turnover = orderMapper.getByDateAndStatus(map); //获取当日营业额
 
             //如果当日营业额为空的话 则将营业额设置为0.0
             if(turnover == null){
@@ -185,7 +185,7 @@ public class ReportServiceImpl implements ReportService {
             Map map = new HashMap<>();
             map.put("beginTime",beginTime);
             map.put("endTime",endTime);
-            Integer orderCount = orderMapper.getOrdersNumberByDateAndStatus(map);
+            Integer orderCount = orderMapper.getOrdersNumberByDateAndStatus(map); //获取订单总数
             if(orderCount == null){
                 orderCount = 0;
             }
@@ -194,7 +194,7 @@ public class ReportServiceImpl implements ReportService {
 
             //获取当日有效订单列表  根据时间去查询有效订单数
             map.put("status",Orders.COMPLETED);
-            Integer validOrderCount = orderMapper.getOrdersNumberByDateAndStatus(map);
+            Integer validOrderCount = orderMapper.getOrdersNumberByDateAndStatus(map); //获取有效订单数
             if(validOrderCount == null){
                 validOrderCount = 0;
             }
