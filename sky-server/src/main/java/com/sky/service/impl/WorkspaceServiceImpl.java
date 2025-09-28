@@ -1,12 +1,18 @@
 package com.sky.service.impl;
 
 
+import com.sky.entity.Dish;
 import com.sky.entity.Orders;
+import com.sky.entity.Setmeal;
+import com.sky.mapper.DishMapper;
 import com.sky.mapper.OrderMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.WorkspaceService;
 import com.sky.vo.BusinessDataVO;
+import com.sky.vo.DishOverViewVO;
 import com.sky.vo.OrderOverViewVO;
+import com.sky.vo.SetmealOverViewVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
@@ -22,6 +28,10 @@ public class WorkspaceServiceImpl implements WorkspaceService {
     private OrderMapper orderMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private DishMapper dishMapper;
+    @Autowired
+    private SetmealMapper setmealMapper;
 
 
     private final LocalDateTime beginTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
@@ -138,6 +148,52 @@ public class WorkspaceServiceImpl implements WorkspaceService {
                 .completedOrders(completedOrdersNumber)
                 .deliveredOrders(deliveryInProgressOrdersNumber)
                 .waitingOrders(pendingOrdersNumber)
+                .build();
+    }
+
+
+    /**
+     * 获得菜品统计数据
+     * @return
+     */
+    @Override
+    public DishOverViewVO getDishOverView() {
+        //已停售菜品数量
+        Dish dish = new Dish();
+        dish.setStatus(0);
+
+        int stopNumber = dishMapper.list(dish).size();
+
+        //已起售菜品数量
+        dish.setStatus(1);
+        int startNumber = dishMapper.list(dish).size();
+
+        //封装vo返回
+        return DishOverViewVO.builder()
+                .discontinued(stopNumber)
+                .sold(startNumber)
+                .build();
+    }
+
+    /**
+     * 获得套餐统计数据
+     * @return
+     */
+    @Override
+    public SetmealOverViewVO getSetmealOverView() {
+        //已停售套餐
+        Setmeal setmeal = new Setmeal();
+        setmeal.setStatus(0);
+        int stopNumber = setmealMapper.list(setmeal).size();
+
+        //已起售套餐数量
+        setmeal.setStatus(1);
+        int startNumber = setmealMapper.list(setmeal).size();
+
+        //封装vo返回
+        return SetmealOverViewVO.builder()
+                .discontinued(stopNumber)
+                .sold(startNumber)
                 .build();
     }
 }
