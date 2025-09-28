@@ -1,18 +1,17 @@
 package com.sky.service.impl;
 
-
-import com.alibaba.fastjson.JSON;
 import com.sky.entity.Orders;
 import com.sky.mapper.OrderMapper;
 import com.sky.mapper.UserMapper;
 import com.sky.service.ReportService;
+import com.sky.vo.OrderReportVO;
+import com.sky.vo.OrderVO;
 import com.sky.vo.TurnoverReportVO;
 import com.sky.vo.UserReportVO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -24,7 +23,6 @@ import java.util.Map;
 @Slf4j
 @Service
 public class ReportServiceImpl implements ReportService {
-
 
     @Autowired
     private OrderMapper orderMapper;
@@ -141,6 +139,98 @@ public class ReportServiceImpl implements ReportService {
                 .dateList(dateListStr)
                 .totalUserList(totalUserListStr)
                 .newUserList(newUserListStr)
+                .build();
+    }
+
+    /**
+     * 订单统计
+     * @param begin
+     * @param end
+     * @return
+     */
+    @Override
+    public OrderReportVO getUserOrdersStatistics(LocalDate begin, LocalDate end) {
+
+        //获取总时间最小和最大时间 用于统计全局
+        LocalDateTime beginTime1 = LocalDateTime.of(begin, LocalTime.MIN);
+        LocalDateTime endTime1 = LocalDateTime.of(end, LocalTime.MAX);
+
+        Map map1 = new HashMap();
+        map1.put("beginTime",beginTime1);
+        map1.put("endTime",endTime1);
+
+
+        //转换时间
+        List<LocalDate> dataList = new ArrayList<>();
+        dataList.add(begin);
+        while(!begin.equals(end)){
+            begin = begin.plusDays(1);
+            dataList.add(begin);
+        }
+
+        String dateListStr = StringUtils.join(dataList, ",");
+
+        //存放总订单数列表
+        List<Integer> allOrderCountList = new ArrayList<>();
+        //存放有效订单数列表
+        List<Integer> validOrderCountList = new ArrayList<>();
+
+        //遍历时间 根据时间获取相应数据
+        for(LocalDate date : dataList){
+            //获取当日时间的最小值和最大值
+            LocalDateTime beginTime = LocalDateTime.of(date, LocalTime.MIN);
+            LocalDateTime endTime = LocalDateTime.of(date, LocalTime.MAX);
+
+
+            //获取当日订单数列表 根据时间去查询订单总数
+            Map map = new HashMap<>();
+            map.put("beginTime",beginTime);
+            map.put("endTime",endTime);
+            Integer orderCount = orderMapper.getOrdersNumberByDateAndStatus(map);
+            if(orderCount == null){
+                orderCount = 0;
+            }
+
+            allOrderCountList.add(orderCount);
+
+
+            //获取当日有效订单列表  根据时间去查询有效订单数
+            map.put("status",Orders.COMPLETED);
+            Integer validOrderCount = orderMapper.getOrdersNumberByDateAndStatus(map);
+            if(validOrderCount == null){
+                validOrderCount = 0;
+            }
+            validOrderCountList.add(validOrderCount);
+        }
+
+
+
+        //获取时间区间内的订单总数
+        Integer allOrdersNumber = orderMapper.getOrdersNumberByDateAndStatus(map1);
+        if (allOrdersNumber == null){
+            allOrdersNumber = 0;
+        }
+
+        //获取时间区间内的有效订单数
+        map1.put("status",Orders.COMPLETED);
+        Integer validOrdersNumber = orderMapper.getOrdersNumberByDateAndStatus(map1);
+        if (validOrdersNumber == null){
+            validOrdersNumber = 0;
+        }
+
+        //获取时间区间内的订单完成率  有效订单数/订单总数
+        Double orderCompletionRate = validOrdersNumber.doubleValue() / allOrdersNumber;
+
+        String allOrderCountListStr = StringUtils.join(allOrderCountList, ',');
+        String validOrderCountListStr = StringUtils.join(validOrderCountList, ',');
+
+        return OrderReportVO.builder()
+                .dateList(dateListStr)
+                .orderCompletionRate(orderCompletionRate)
+                .orderCountList(allOrderCountListStr)
+                .totalOrderCount(allOrdersNumber)
+                .validOrderCount(validOrdersNumber)
+                .validOrderCountList(validOrderCountListStr)
                 .build();
     }
 }

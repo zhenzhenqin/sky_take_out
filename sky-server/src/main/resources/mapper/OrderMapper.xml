@@ -81,4 +81,20 @@
             </if>
         </where>
     </select>
+
+    <!--根据日期以及状态动态查询订单数量-->
+    <select id="getOrdersNumberByDateAndStatus" resultType="java.lang.Integer">
+        select count(*) from orders
+        <where>
+            <if test="beginTime != null">
+                and order_time &gt;= #{beginTime}
+            </if>
+            <if test="endTime != null">
+                and order_time &lt;= #{endTime}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

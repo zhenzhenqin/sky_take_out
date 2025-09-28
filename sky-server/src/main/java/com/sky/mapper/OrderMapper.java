@@ -82,4 +82,11 @@ public interface OrderMapper {
      * @return
      */
     Double getByDateAndStatus(Map map);
+
+    /**
+     * 根据日期范围和订单状态查询订单数量
+     * @param map
+     * @return
+     */
+    Integer getOrdersNumberByDateAndStatus(Map map);
 }
