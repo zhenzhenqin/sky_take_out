@@ -17,7 +17,7 @@ sky:
     bucket-name: java-management-016
     endpoint: oss-cn-hangzhou.aliyuncs.com
     access-key-id: java-management-016
-    access-key-secret: QjqIA4MRVplurQzEHrSx9jHFMbF3dJ
+    access-key-secret: java-management-016
 
   wechat:
     appid: wx4cdddbcd89c97cd0
