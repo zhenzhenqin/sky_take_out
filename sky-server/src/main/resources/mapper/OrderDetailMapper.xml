@@ -15,7 +15,7 @@
 
     <!--查询销量前10-->
     <select id="getSalesTop10" resultType="com.sky.entity.OrderDetail">
-        select od.name as name, count(od.name) as number
+        select od.name as name, sum(od.number) as number
         from order_detail od, orders o
         <where>
             od.order_id = o.id
@@ -27,7 +27,7 @@
             </if>
         </where>
         group by od.name
-        order by count(od.name) desc
+        order by sum(od.number) desc
         limit 10
     </select>
 </mapper>
